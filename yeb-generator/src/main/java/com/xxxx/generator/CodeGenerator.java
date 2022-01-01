@@ -58,8 +58,8 @@ public class CodeGenerator {
 
         //数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/xxx?useUnicode=true&characterEncoding=UTF-8");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
+        dsc.setUrl("jdbc:mysql://localhost:3306/yeb?useUnicode=true&characterEncoding=UTF-8");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
         mpg.setDataSource(dsc);
@@ -88,7 +88,7 @@ public class CodeGenerator {
         //自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         //自定义配置会被优先输出
-        focList.add(new FileOutConfig() {
+        focList.add(new FileOutConfig(templatePath) {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 //自定义输出文件名，如果你Entity 设置了前后缀，此处注意 xml 的名称会跟着发生变化！！
