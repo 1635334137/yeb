@@ -66,7 +66,7 @@ public class CodeGenerator {
 
         //包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.xxxx")
+        pc.setParent("com.xxxx.server")
                 .setEntity("pojo")
                 .setMapper("mapper")
                 .setService("service")
@@ -97,6 +97,7 @@ public class CodeGenerator {
             }
         });
         cfg.setFileOutConfigList(focList);
+        mpg.setCfg(cfg);
 
         //配置模板
         TemplateConfig templateConfig = new TemplateConfig();
