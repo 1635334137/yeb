@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxxx.server.config.security.component.JwtTokenUtil;
 import com.xxxx.server.mapper.AdminMapper;
+import com.xxxx.server.mapper.AdminRoleMapper;
 import com.xxxx.server.mapper.RoleMapper;
 import com.xxxx.server.pojo.Admin;
+import com.xxxx.server.pojo.AdminRole;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
+import com.xxxx.server.utils.AdminUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -53,6 +57,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
 
     /**
      * 登录之后返回token
@@ -109,6 +116,33 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public List<Role> getRoles(Integer adminId) {
         return roleMapper.getRoles(adminId);
+    }
+
+    /**
+     * 获取所有操作员
+     * @param keywords
+     * @return
+     */
+    @Override
+    public List<Admin> getAllAdmins(String keywords) {
+        return adminMapper.getAllAdmins(AdminUtils.getCurrentAdmin().getId(),keywords);
+    }
+
+    /**
+     * 更新操作员角色
+     * @param adminId
+     * @param rids
+     * @return
+     */
+    @Override
+    @Transactional
+    public RespBean updateAdminRole(Integer adminId, Integer[] rids) {
+        adminRoleMapper.delete(new QueryWrapper<AdminRole>().eq("adminId",adminId));
+        Integer result = adminRoleMapper.addAdminRole(adminId, rids);
+        if(rids.length == result){
+            return RespBean.success("更新成功！");
+        }
+        return RespBean.error("更新失败！");
     }
 
 }
