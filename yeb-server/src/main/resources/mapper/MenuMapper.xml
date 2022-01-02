@@ -39,6 +39,19 @@
         </collection>
     </resultMap>
 
+    <resultMap id="MenusWithChildren" type="com.xxxx.server.pojo.Menu" extends="BaseResultMap">
+        <id column="id1" property="id"/>
+        <result column="name1" property="name"/>
+        <collection property="children" ofType="com.xxxx.server.pojo.Menu">
+            <id column="id2" property="id"/>
+            <result column="name2" property="name"/>
+            <collection property="children" ofType="com.xxxx.server.pojo.Menu">
+                <id column="id3" property="id"/>
+                <result column="name3" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
@@ -91,4 +104,22 @@
             M.ID
     </select>
 
+    <!--查询所有菜单-->
+    <select id="getAllMenus" resultMap="MenusWithChildren">
+        SELECT
+            M1.ID AS ID1,
+            M1.`NAME` AS NAME1,
+            M2.ID AS ID2,
+            M2.`NAME` AS NAME2,
+            M3.ID AS ID3,
+            M3.`NAME` AS NAME3
+        FROM
+            T_MENU M1,
+            T_MENU M2,
+            T_MENU M3
+        WHERE
+            M1.ID = M2.PARENTID
+          AND M2.ID = M3.PARENTID
+          AND M3.ENABLED = TRUE
+    </select>
 </mapper>
