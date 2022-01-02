@@ -16,9 +16,51 @@
         <result column="enabled" property="enabled" />
     </resultMap>
 
+    <resultMap id="Menus" type="com.xxxx.server.pojo.Menu" extends="BaseResultMap">
+        <collection property="children" ofType="com.xxxx.server.pojo.Menu">
+            <id column="id2" property="id" />
+            <result column="url2" property="url" />
+            <result column="path2" property="path" />
+            <result column="component2" property="component" />
+            <result column="name2" property="name" />
+            <result column="iconCls2" property="iconCls" />
+            <result column="keepAlive2" property="keepAlive" />
+            <result column="requireAuth2" property="requireAuth" />
+            <result column="parentId2" property="parentId" />
+            <result column="enabled2" property="enabled" />
+        </collection>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
     </sql>
+
+    <!--通过用户id查询菜单列表-->
+    <select id="getMenusByAdminId" resultMap="Menus">
+        SELECT DISTINCT
+            M1.*,
+            M2.ID AS ID2,
+            M2.URL AS URL2,
+            M2.PATH AS PATH2,
+            M2.COMPONENT AS COMPONENT2,
+            M2.`NAME` AS NAME2,
+            M2.ICONCLS AS ICONCLS2,
+            M2.KEEPALIVE AS KEEPALIVE2,
+            M2.REQUIREAUTH AS REQUIREAUTH2,
+            M2.PARENTID AS PARENTID2,
+            M2.ENABLED AS ENABLED2
+        FROM
+            T_MENU M1,
+            T_MENU M2,
+            T_ADMIN_ROLE AR,
+            T_MENU_ROLE MR
+        WHERE
+            M1.ID = M2.PARENTID
+          AND M2.ID = MR.MID
+          AND MR.RID = AR.RID
+          AND AR.ADMINID = #{id}
+          AND M2.ENABLED = TRUE
+    </select>
 
 </mapper>
