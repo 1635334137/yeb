@@ -31,6 +31,14 @@
         </collection>
     </resultMap>
 
+    <resultMap id="MenusWithRole" type="com.xxxx.server.pojo.Menu" extends="BaseResultMap">
+        <collection property="roles" ofType="com.xxxx.server.pojo.Role">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+            <result column="rnameZh" property="nameZh"/>
+        </collection>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
@@ -61,6 +69,26 @@
           AND MR.RID = AR.RID
           AND AR.ADMINID = #{id}
           AND M2.ENABLED = TRUE
+        ORDER BY
+            M2.id
+    </select>
+
+    <!--根据角色获取菜单列表-->
+    <select id="getMenusWithRole" resultMap="MenusWithRole">
+        SELECT
+            M.*,
+            R.ID AS RID,
+            R.`NAME` AS RNAME,
+            R.NAMEZH AS RNAMEZH
+        FROM
+            T_MENU M,
+            T_MENU_ROLE MR,
+            T_ROLE R
+        WHERE
+            M.ID = MR.MID
+          AND R.ID = MR.RID
+        ORDER BY
+            M.ID
     </select>
 
 </mapper>
