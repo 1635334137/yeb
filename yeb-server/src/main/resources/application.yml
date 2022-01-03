@@ -29,6 +29,12 @@ spring:
         max-idle: 200
         min-idle: 5
 
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 127.0.0.1
+    port: 5672
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
   type-enums-package: com.xxxx.server.pojo

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.theymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>入职欢迎邮件</title>
+</head>
+<body>
+    欢迎<span th:text="${name}"></span>加入XXXX大家庭，您的入职信息如下：
+<table border="1">
+    <tr>
+        <td>姓名</td>
+        <td th:text="${name}"></td>
+    </tr>
+    <tr>
+        <td>职位</td>
+        <td th:text="${posName}"></td>
+    </tr>
+    <tr>
+        <td>职称</td>
+        <td th:text="${joblevelName}"></td>
+    </tr>
+    <tr>
+        <td>部门</td>
+        <td th:text="${departmentName}"></td>
+    </tr>
+</table>
+<p>
+    我们永远以一颗热情、年轻、善良的心并肩同行，我们的团队有着共同的远景与目标、信仰与追求，对理想
+    与美好生活的共同渴望使我们彼此关爱、相互激励，共同成长。诚信、求实、敬业、奉献，我们的信念永远不变。
+    我们在这个狼族家园中，接受企业文化的滋润与重塑，它给予我们新的观念、新的理想，无论我们身处何方，我们
+    都将与它一起茁壮成长。
+</p>
+</body>
+</html>
