@@ -2,6 +2,7 @@ package com.xxxx.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -115,5 +116,19 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public List<Employee> getEmployee(Integer id) {
         return employeeMapper.getEmployee(id);
+    }
+
+    /**
+     * 获取所有员工账套
+     * @param currentPage
+     * @param size
+     * @return
+     */
+    @Override
+    public RespPageBean getEmployeeWithSalary(Integer currentPage, Integer size) {
+        Page<Employee> page = new Page<>(currentPage,size);
+        IPage<Employee> employeeIPage = employeeMapper.getEmployeeWithSalary(page);
+        RespPageBean respPageBean = new RespPageBean(employeeIPage.getTotal(),employeeIPage.getRecords());
+        return respPageBean;
     }
 }
